@@ -309,7 +309,9 @@
   #formLugar { margin:0; }
   #enviarLugar[hidden] { display:none; }
   #enviarLugar { animation:pasoEntra .35s var(--salida) both; margin-top:var(--s3); min-height:56px; font-size:1.05rem; font-weight:700; background:linear-gradient(180deg,#f7d27a,#e9b43c); color:#2a1d36; box-shadow:0 4px 0 #b8862a; }
-  #enviarLugar:active { transform:translateY(3px); box-shadow:0 1px 0 #b8862a; }
+  #enviarLugar:active:not(:disabled) { transform:translateY(3px); box-shadow:0 1px 0 #b8862a; }
+  #enviarLugar:disabled { background:#6f6878; color:#cfc8d6; box-shadow:0 4px 0 #4e4857; opacity:.65; cursor:not-allowed; animation:none; }
+  #enviarLugar.enviado:disabled { background:linear-gradient(180deg,#f7d27a,#e9b43c); color:#2a1d36; box-shadow:0 4px 0 #b8862a; opacity:1; }
   .elogio.ya { animation:elogioSale .5s var(--salida) forwards; }
   @media (prefers-reduced-motion: reduce) { .elogio.ya { animation:fadeFuera .4s ease-in forwards; } }
 
@@ -502,7 +504,7 @@
               <form id="formLugar" novalidate>
                 <label class="etiqueta" for="lugar">¿Ya tienes un sitio en mente?</label>
                 <input id="lugar" class="lugar" type="text" maxlength="120" placeholder="Escribe el nombre del restaurante" autocomplete="off" enterkeyhint="send">
-                <button type="submit" class="btn tinta" id="enviarLugar" hidden>Enviar mi elección <span aria-hidden="true">→</span></button>
+                <button type="submit" class="btn tinta" id="enviarLugar" disabled aria-disabled="true">Enviar mi elección <span aria-hidden="true">→</span></button>
               </form>
               <p class="estado" id="estado" aria-live="polite"></p>
         </div>
@@ -795,8 +797,8 @@
   const estado = document.getElementById("estado");
   const inputLugar = document.getElementById("lugar");
   const btnE = document.getElementById("enviarLugar");
-  // El botón de enviar solo aparece cuando ya hay algo que enviar
-  function actualizarEnviar() { btnE.hidden = !(eleccion || inputLugar.value.trim()); }
+  // El botón de enviar se ve siempre, pero solo se activa cuando ya hay algo que enviar
+  function actualizarEnviar() { if (enviado) return; const listo = !!(eleccion || inputLugar.value.trim()); btnE.disabled = !listo; btnE.setAttribute("aria-disabled", String(!listo)); }
   document.querySelectorAll(".opcion, .resto").forEach(b => b.addEventListener("click", actualizarEnviar));
   document.getElementById("restos").addEventListener("click", actualizarEnviar);
   inputLugar.addEventListener("input", actualizarEnviar);
@@ -808,7 +810,7 @@
     const texto = inputLugar.value.trim();
     const final = [eleccion, texto].filter(Boolean).join(" · ");
     if (!final) { estado.textContent = "Escoge una opción o escribe un lugar."; return; }
-    btnE.hidden = false; btnE.disabled = true; estado.textContent = "Enviando…";
+    btnE.disabled = true; estado.textContent = "Enviando…";
     const wa = "https://wa.me/?text=" + encodeURIComponent("¡Acepto la cena! 🍽️ Elijo: " + final);
     try {
       const r = await fetch("https://ntfy.sh/" + TEMA, { method:"POST", body:"Natalia eligió: " + final,
@@ -818,7 +820,7 @@
       try { localStorage.setItem("eleccionCena", final); } catch(e) {}
       estado.innerHTML = "¡Listo! Alexander ya sabe que escogiste <strong></strong>. Nos vamos a comer delicioso.";
       estado.querySelector("strong").textContent = final;
-      btnE.textContent = "Elección enviada ✓";
+      btnE.textContent = "Elección enviada ✓"; btnE.classList.add("enviado");
       inputLugar.blur(); vibrar([30, 40, 30]);
       lanzarConfeti(200);
       setTimeout(() => document.getElementById("cierre").scrollIntoView({ behavior: menosMov ? "auto" : "smooth", block: "start" }), 1600);
