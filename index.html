@@ -213,7 +213,12 @@
     background:linear-gradient(180deg, rgba(29,23,41,0) 0%, rgba(122,84,112,.55) 35%, rgba(201,139,98,.85) 75%, #e0a86a 100%); }
   .cierre-interior { width:min(100%, 34rem); margin:0 auto; }
   .cierre p { font-family:var(--serif-texto); font-size:var(--t-2); line-height:1.45; max-width:22ch; }
-  .firma { margin-top:0; font-family:var(--serif-display); font-style:italic; font-size:var(--t-3); line-height:1.15; color:var(--noche); }
+  .cierre-interior { display:flex; justify-content:center; }
+  .cierre p.firma { max-width:none; margin:0 auto; text-align:center; padding:var(--s4) var(--s5); border-radius:22px;
+    background:rgba(29,23,41,.88); border:1px solid rgba(242,193,78,.7); box-shadow:0 18px 40px rgba(29,23,41,.35), inset 0 0 0 4px rgba(29,23,41,.88), inset 0 0 0 5px rgba(242,193,78,.35); }
+  .firma-saludo { display:block; font-family:var(--serif-texto); font-style:italic; font-size:clamp(1.15rem,5vw,1.4rem); letter-spacing:.3px; color:var(--crema); opacity:.92; }
+  .firma-nombre { display:block; margin-top:6px; font-family:var(--serif-display); font-style:italic; font-weight:600; font-size:clamp(2.4rem,11vw,3.4rem); line-height:1.05; color:var(--oro); text-shadow:0 2px 18px rgba(242,193,78,.25); }
+  .firma-nombre::after { content:""; display:block; width:56px; height:2px; margin:12px auto 0; background:linear-gradient(90deg,transparent,var(--oro),transparent); }
   .pie-pre { padding-bottom:var(--s5); }
 
   /* ---------- Entrada orquestada (solo la portada) ---------- */
@@ -509,7 +514,7 @@
 
 <footer class="cierre" id="cierre" hidden>
   <div class="cierre-interior">
-    <p class="firma">Con mucho cariño, Alexander</p>
+    <p class="firma"><span class="firma-saludo">Con mucho cariño,</span> <span class="firma-nombre">Alexander</span></p>
   </div>
 </footer>
 
