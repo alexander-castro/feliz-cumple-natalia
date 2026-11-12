@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#2b1055">
+<meta property="og:title" content="¡Feliz Cumpleaños, Natalia! 🎂">
+<meta property="og:description" content="Una sorpresa para ti. Ábrela 🎁">
+<title>¡Feliz Cumpleaños!</title>
+<style>
+  :root { --rosa:#ff5fa2; --amarillo:#ffd23f; --azul:#3bceac; --morado:#7b5cff; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    min-height:100vh; min-height:100dvh; overflow-x:hidden; padding:30px 0; font-family:"Trebuchet MS", "Segoe UI", sans-serif;
+    background:linear-gradient(135deg,#2b1055,#7597de); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+  }
+  #confeti { position:fixed; inset:0; pointer-events:none; z-index:1; }
+  .globo {
+    position:fixed; bottom:-160px; width:70px; height:90px; border-radius:50% 50% 48% 48%;
+    cursor:pointer; z-index:2; animation:subir linear infinite; transition:transform .15s;
+  }
+  .globo::after { content:""; position:absolute; left:50%; top:100%; width:1px; height:70px; background:rgba(255,255,255,.6); }
+  .globo:hover { transform:scale(1.1); }
+  .globo.reventado { animation:none; transform:scale(1.6); opacity:0; transition:all .25s; }
+  @keyframes subir {
+    0% { transform:translateY(0) rotate(-4deg); }
+    50% { transform:translateY(-60vh) rotate(4deg); }
+    100% { transform:translateY(-130vh) rotate(-4deg); }
+  }
+  .tarjeta {
+    position:relative; z-index:3; width:min(92vw,520px); padding:40px 30px; text-align:center;
+    background:rgba(255,255,255,.12); border:2px solid rgba(255,255,255,.3); border-radius:24px;
+    backdrop-filter:blur(8px); box-shadow:0 20px 50px rgba(0,0,0,.35);
+    animation:aparecer 1.2s ease-out both;
+  }
+  @keyframes aparecer { from { opacity:0; transform:translateY(40px) scale(.9);} to { opacity:1; transform:none; } }
+  h1 {
+    font-size:clamp(2rem,7vw,3.2rem); line-height:1.1;
+    background:linear-gradient(90deg,var(--amarillo),var(--rosa),var(--azul),var(--amarillo));
+    background-size:300% 100%; -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation:brillo 4s linear infinite;
+  }
+  @keyframes brillo { to { background-position:300% 0; } }
+  .nombre { font-size:1.6rem; margin:10px 0 18px; opacity:0; animation:aparecer 1s .8s ease-out forwards; }
+  .pastel { font-size:4.5rem; cursor:pointer; display:inline-block; animation:latido 1.6s ease-in-out infinite; user-select:none; }
+  @keyframes latido { 0%,100% { transform:scale(1);} 50% { transform:scale(1.08);} }
+  .pista { font-size:.9rem; opacity:.8; margin-top:6px; }
+  .mensaje {
+    max-height:0; overflow:hidden; opacity:0; transition:max-height 1s ease, opacity 1s ease, margin .6s;
+    font-size:1.1rem; line-height:1.6;
+  }
+  .mensaje.visible { max-height:1400px; opacity:1; margin-top:18px; }
+  .botones { margin-top:22px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  button {
+    border:none; border-radius:999px; padding:12px 22px; font-size:1rem; font-weight:bold; cursor:pointer;
+    color:#2b1055; background:var(--amarillo); box-shadow:0 6px 0 #c9a300; transition:transform .1s, box-shadow .1s;
+  }
+  button:active { transform:translateY(4px); box-shadow:0 2px 0 #c9a300; }
+  button.secundario { background:var(--azul); box-shadow:0 6px 0 #23917a; }
+  .estrella { position:fixed; z-index:0; color:#fff; opacity:.7; animation:titilar 2s ease-in-out infinite; pointer-events:none; }
+  @keyframes titilar { 0%,100% { opacity:.2; } 50% { opacity:1; } }
+  .contador { margin-top:10px; font-size:.85rem; opacity:.85; }
+  .regalo-zona { margin-top:16px; }
+  .regalo { font-size:4rem; display:inline-block; cursor:pointer; user-select:none; transition:transform .2s; }
+  .regalo.sacudir { animation:sacudir .5s ease; }
+  @keyframes sacudir { 0%,100%{transform:rotate(0)} 20%{transform:rotate(-15deg)} 40%{transform:rotate(15deg)} 60%{transform:rotate(-10deg)} 80%{transform:rotate(10deg)} }
+  .regalo.abierto { transform:scale(0); }
+  .sorpresa { max-height:0; opacity:0; overflow:hidden; transition:max-height 1s ease, opacity 1s ease; }
+  .sorpresa.visible { max-height:900px; opacity:1; }
+  .cena { font-size:3.5rem; animation:latido 1.4s ease-in-out infinite; }
+  .elogio { position:fixed; z-index:4; font-weight:bold; font-size:1.1rem; color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.5);
+    pointer-events:none; animation:flotar 1.8s ease-out forwards; white-space:nowrap; }
+  @keyframes flotar { from { opacity:1; transform:translate(-50%,0) scale(.8);} to { opacity:0; transform:translate(-50%,-90px) scale(1.15);} }
+  /* ---------- Elección del restaurante ---------- */
+  .opciones { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:14px 0 10px; }
+  .opcion { background:rgba(255,255,255,.18); color:#fff; box-shadow:none; border:2px solid rgba(255,255,255,.35); padding:12px 8px; font-size:.95rem; min-height:48px; }
+  .opcion.elegida { background:var(--amarillo); color:#2b1055; border-color:var(--amarillo); }
+  .lugar { width:100%; min-height:48px; border-radius:14px; border:2px solid rgba(255,255,255,.4); background:rgba(255,255,255,.95);
+    color:#2b1055; font-size:16px; padding:10px 14px; margin-bottom:12px; }
+  .estado { margin-top:10px; font-size:.95rem; min-height:1.2em; }
+  .estado a { color:var(--amarillo); }
+  /* ---------- Móvil ---------- */
+  html { -webkit-text-size-adjust:100%; }
+  button, .pastel, .regalo, .globo { touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
+  button { min-height:48px; }
+  @media (hover:none) { .globo:hover { transform:none; } }
+  @media (max-width:480px) {
+    body { align-items:flex-start; padding:max(18px, env(safe-area-inset-top)) 0 max(24px, env(safe-area-inset-bottom)); }
+    .tarjeta { padding:28px 18px; border-radius:20px; }
+    .nombre { font-size:1.35rem; }
+    .pastel { font-size:4rem; }
+    .mensaje { font-size:1rem; }
+    .globo { width:62px; height:80px; }
+    .botones button { flex:1 1 100%; }
+  }
+</style>
+</head>
+<body>
+<canvas id="confeti"></canvas>
+
+<div class="tarjeta">
+  <h1>¡Feliz Cumpleaños!</h1>
+  <div class="nombre" id="nombre"></div>
+  <div class="pastel" id="pastel" title="¡Haz clic!">🎂</div>
+  <div class="pista" id="pista">Natalia, haz clic en el pastel para soplar las velas</div>
+  <div class="mensaje" id="mensaje">
+    <p>Hoy celebramos a una mujer increíble. 🎉</p>
+    <p>Admiro todo lo que has logrado en tus estudios: cada logro académico es fruto de tu disciplina y de tu esfuerzo.</p>
+    <p>Eres de las personas más trabajadoras que conozco. Puedes con varios trabajos a la vez y en todos te va bien, porque siempre das lo mejor de ti.</p>
+    <p>Tu familia es tu centro, y se nota el amor con el que la cuidas. Y ese corazón enorme también alcanza para los animales, que tienen en ti a una gran aliada. 🐾</p>
+    <p>Que este nuevo año te devuelva todo lo bueno que das: alegría, salud, descanso y muchos momentos para sonreír.</p>
+    <p><strong>Con mucho cariño, Alexander</strong> 💛</p>
+    <div class="regalo-zona" id="regaloZona">
+      <p class="pista">Pero falta tu regalo… ¡sacude la caja 3 veces!</p>
+      <div class="regalo" id="regalo" title="¡Sacúdeme!">🎁</div>
+      <div class="sorpresa" id="sorpresa">
+        <div class="cena">🍽️🥂</div>
+        <p><strong>¡Tu regalo es una cena!</strong></p>
+        <p>Te invito a cenar para celebrar tus 30 como te mereces. ¿A dónde quieres ir? ✨</p>
+        <div class="opciones" id="opciones">
+          <button type="button" class="opcion">🇨🇴 Comida colombiana</button>
+          <button type="button" class="opcion">🍝 Italiana</button>
+          <button type="button" class="opcion">🍣 Sushi</button>
+          <button type="button" class="opcion">🥩 Parrilla</button>
+          <button type="button" class="opcion">🌮 Mexicana</button>
+          <button type="button" class="opcion">🎲 ¡Sorpréndeme!</button>
+        </div>
+        <input id="lugar" class="lugar" type="text" maxlength="120" placeholder="¿Tienes un restaurante en mente? Escríbelo aquí" autocomplete="off">
+        <button type="button" id="enviarLugar">💌 Enviar mi elección</button>
+        <p class="estado" id="estado"></p>
+      </div>
+    </div>
+  </div>
+  <div class="botones">
+    <button id="musica">▶ Tocar música</button>
+    <button class="secundario" id="fiesta">🎊 ¡Más confeti!</button>
+  </div>
+  <div class="contador" id="contador">Revienta los globos: 0 🎈</div>
+</div>
+
+<script>
+  // ✏️ Cambia aquí el nombre de tu amigo/a
+  const NOMBRE = "Natalia";
+  document.getElementById("nombre").textContent = "para " + NOMBRE + " 🥳";
+
+  // ---------- Estrellas de fondo ----------
+  for (let i = 0; i < 40; i++) {
+    const s = document.createElement("div");
+    s.className = "estrella"; s.textContent = "✦";
+    s.style.left = Math.random()*100 + "vw"; s.style.top = Math.random()*100 + "vh";
+    s.style.fontSize = (6 + Math.random()*10) + "px";
+    s.style.animationDelay = (Math.random()*2) + "s";
+    document.body.appendChild(s);
+  }
+
+  // ---------- Confeti ----------
+  const cv = document.getElementById("confeti"), ctx = cv.getContext("2d");
+  let piezas = [];
+  const colores = ["#ff5fa2","#ffd23f","#3bceac","#7b5cff","#ffffff","#ff8c42"];
+  function ajustar(){ cv.width = innerWidth; cv.height = innerHeight; }
+  addEventListener("resize", ajustar); ajustar();
+  function lanzarConfeti(n = 150, x = innerWidth/2, y = innerHeight/3) {
+    for (let i = 0; i < n; i++) {
+      piezas.push({ x, y, vx:(Math.random()-.5)*14, vy:Math.random()*-12-4, g:.3+Math.random()*.15,
+        w:6+Math.random()*6, h:8+Math.random()*8, r:Math.random()*6, vr:(Math.random()-.5)*.3,
+        c:colores[Math.random()*colores.length|0], vida:0 });
+    }
+  }
+  (function animar(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    piezas = piezas.filter(p => p.y < cv.height + 20 && p.vida < 400);
+    for (const p of piezas) {
+      p.vy += p.g*.5; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.vida++;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r); ctx.fillStyle = p.c;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h*Math.abs(Math.cos(p.r))); ctx.restore();
+    }
+    requestAnimationFrame(animar);
+  })();
+  setTimeout(() => lanzarConfeti(200), 600);
+  document.getElementById("fiesta").onclick = () => {
+    lanzarConfeti(120, innerWidth*.2, innerHeight*.5);
+    lanzarConfeti(120, innerWidth*.8, innerHeight*.5);
+  };
+
+  // ---------- Mensaje al hacer clic en el pastel ----------
+  const pastel = document.getElementById("pastel");
+  pastel.onclick = () => {
+    document.getElementById("mensaje").classList.add("visible");
+    document.getElementById("pista").textContent = "¡Pide un deseo! ✨";
+    pastel.textContent = "🍰";
+    const r = pastel.getBoundingClientRect();
+    lanzarConfeti(180, r.left + r.width/2, r.top);
+  };
+
+  // ---------- Juego del regalo: sacudir 3 veces para descubrir la cena ----------
+  const regalo = document.getElementById("regalo");
+  let sacudidas = 0;
+  regalo.onclick = () => {
+    if (sacudidas >= 3) return;
+    sacudidas++;
+    regalo.classList.remove("sacudir"); void regalo.offsetWidth; regalo.classList.add("sacudir");
+    pop();
+    if (sacudidas === 3) {
+      setTimeout(() => {
+        regalo.classList.add("abierto");
+        document.getElementById("sorpresa").classList.add("visible");
+        const r = regalo.getBoundingClientRect();
+        lanzarConfeti(250, r.left + r.width/2, r.top);
+        setTimeout(() => regalo.style.display = "none", 250);
+      }, 500);
+    }
+  };
+
+
+  // ---------- Elección del restaurante: se envía a Alexander ----------
+  const TEMA = "natalia-cena-3850b41d45ee"; // canal privado de notificaciones (ntfy.sh)
+  let eleccion = "";
+  document.querySelectorAll(".opcion").forEach(b => b.onclick = () => {
+    document.querySelectorAll(".opcion").forEach(x => x.classList.remove("elegida"));
+    b.classList.add("elegida"); eleccion = b.textContent.trim();
+  });
+  const estado = document.getElementById("estado");
+  document.getElementById("enviarLugar").onclick = async () => {
+    const texto = document.getElementById("lugar").value.trim();
+    const final = [eleccion, texto].filter(Boolean).join(" · ");
+    if (!final) { estado.textContent = "Elige una opción o escribe un lugar 😊"; return; }
+    const btnE = document.getElementById("enviarLugar");
+    btnE.disabled = true; estado.textContent = "Enviando…";
+    const wa = "https://wa.me/?text=" + encodeURIComponent("¡Acepto la cena! 🍽️ Elijo: " + final);
+    try {
+      const r = await fetch("https://ntfy.sh/" + TEMA, { method:"POST", body:"Natalia eligió: " + final,
+        headers:{ "Title":"Cena de cumpleaños", "Tags":"birthday,fork_and_knife" } });
+      if (!r.ok) throw new Error(r.status);
+      try { localStorage.setItem("eleccionCena", final); } catch(e) {}
+      estado.innerHTML = "¡Listo! Alexander ya sabe que elegiste: <strong></strong> 🥂";
+      estado.querySelector("strong").textContent = final;
+      lanzarConfeti(200);
+    } catch (e) {
+      estado.innerHTML = 'No se pudo enviar automáticamente. <a target="_blank" rel="noopener">Cuéntaselo por WhatsApp</a> 💬';
+      estado.querySelector("a").href = wa;
+      btnE.disabled = false;
+    }
+  };
+
+  // ---------- Globos que se pueden reventar ----------
+  let reventados = 0, iElogio = 0;
+  const elogios = ["¡Súper trabajadora! 💪","¡Brillante en sus estudios! 🎓","¡Ama a su familia! 👨‍👩‍👧","¡Amiga de los animales! 🐾",
+    "¡Puede con varios trabajos! 💼","¡Imparable! 🚀","¡30 y brillando! ✨"];
+  function mostrarElogio(x, y) {
+    const d = document.createElement("div");
+    d.className = "elogio"; d.textContent = elogios[iElogio++ % elogios.length];
+    d.style.left = x + "px"; d.style.top = y + "px";
+    document.body.appendChild(d); setTimeout(() => d.remove(), 1900);
+  }
+  function crearGlobo() {
+    const g = document.createElement("div");
+    g.className = "globo";
+    const c = colores[Math.random()*5|0];
+    g.style.background = `radial-gradient(circle at 30% 30%, #fff8, ${c} 40%)`;
+    g.style.left = Math.random()*90 + "vw";
+    g.style.animationDuration = (9 + Math.random()*7) + "s";
+    g.onclick = (e) => {
+      g.classList.add("reventado"); pop();
+      lanzarConfeti(40, e.clientX, e.clientY);
+      mostrarElogio(e.clientX, e.clientY);
+      reventados++;
+      document.getElementById("contador").textContent = "Revienta los globos: " + reventados + " 🎈";
+      setTimeout(() => g.remove(), 300);
+    };
+    g.addEventListener("animationiteration", () => { g.style.left = Math.random()*90 + "vw"; });
+    document.body.appendChild(g);
+  }
+  for (let i = 0; i < 8; i++) setTimeout(crearGlobo, i*900);
+  setInterval(() => { if (document.querySelectorAll(".globo").length < 8) crearGlobo(); }, 2500);
+
+  // ---------- Música: "Cumpleaños feliz" sintetizada con Web Audio (sin archivos externos) ----------
+  let audioCtx = null, sonando = false, temporizadores = [];
+  const N = { G4:392, A4:440, B4:493.88, C5:523.25, D5:587.33, E5:659.25, F5:698.46, G5:783.99 };
+  const melodia = [
+    ["G4",.75],["G4",.25],["A4",1],["G4",1],["C5",1],["B4",2],
+    ["G4",.75],["G4",.25],["A4",1],["G4",1],["D5",1],["C5",2],
+    ["G4",.75],["G4",.25],["G5",1],["E5",1],["C5",1],["B4",1],["A4",2],
+    ["F5",.75],["F5",.25],["E5",1],["C5",1],["D5",1],["C5",3]
+  ];
+  function nota(freq, inicio, dur) {
+    const o = audioCtx.createOscillator(), o2 = audioCtx.createOscillator(), gn = audioCtx.createGain();
+    o.type = "triangle"; o2.type = "sine"; o.frequency.value = freq; o2.frequency.value = freq*2;
+    gn.gain.setValueAtTime(0, inicio);
+    gn.gain.linearRampToValueAtTime(.25, inicio + .03);
+    gn.gain.exponentialRampToValueAtTime(.001, inicio + dur*.95);
+    o.connect(gn); o2.connect(gn); gn.connect(audioCtx.destination);
+    o.start(inicio); o2.start(inicio); o.stop(inicio + dur); o2.stop(inicio + dur);
+  }
+  function pop() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain(), t = audioCtx.currentTime;
+    o.type = "square"; o.frequency.setValueAtTime(600, t); o.frequency.exponentialRampToValueAtTime(80, t+.12);
+    g.gain.setValueAtTime(.15, t); g.gain.exponentialRampToValueAtTime(.001, t+.12);
+    o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+.13);
+  }
+  const btn = document.getElementById("musica");
+  function tocar() {
+    const pulso = .45; let t = audioCtx.currentTime + .1;
+    melodia.forEach(([n, d]) => { nota(N[n], t, d*pulso); t += d*pulso; });
+    const total = (t - audioCtx.currentTime) * 1000;
+    temporizadores.push(setTimeout(() => { if (sonando) tocar(); }, total + 600));
+  }
+  btn.onclick = async () => {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (!sonando) {
+      await audioCtx.resume(); sonando = true; btn.textContent = "⏸ Pausar música"; tocar();
+    } else {
+      sonando = false; btn.textContent = "▶ Tocar música";
+      temporizadores.forEach(clearTimeout); temporizadores = [];
+      await audioCtx.suspend(); audioCtx.close(); audioCtx = null;
+    }
+  };
+</script>
+</body>
+</html>
