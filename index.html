@@ -349,7 +349,7 @@
   </defs>
 </svg>
 
-<button class="musica-btn" id="musica" aria-label="Poner música: Cumpleaños feliz" aria-pressed="false">
+<button class="musica-btn" id="musica" aria-label="Poner música" aria-pressed="false">
   <svg class="ic-nota" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 18.5a3 3 0 1 1-2-2.83V5.2l12-2.7v12.5a3 3 0 1 1-2-2.83V6.3L9 8.1v10.4z"/></svg>
   <svg class="ic-pausa" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
 </button>
@@ -699,7 +699,7 @@
     vibrar(40);
     const r = pastel.getBoundingClientRect();
     lanzarConfeti(180, r.left + r.width/2, r.top);
-    momentoCumple();   // "Cumpleaños feliz" sintetizado; La vuelta al mundo baja, pausa y luego vuelve
+    // Sin "Cumpleaños feliz": La vuelta al mundo sigue sonando y el flujo continúa al regalo
     setTimeout(() => abrirPaso("regaloZona"), 1400);
   };
 
