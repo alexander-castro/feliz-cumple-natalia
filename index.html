@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#1d1729">
 <meta property="og:title" content="¡Feliz cumpleaños, Natalia! 🌼">
 <meta property="og:description" content="Treinta años floreciendo. Ábrela, hay una sorpresa adentro.">
+<link rel="preconnect" href="https://www.youtube.com">
+<link rel="preconnect" href="https://i.ytimg.com">
 <title>¡Feliz cumpleaños, Natalia!</title>
 <style>
   /* ---------- Tokens ----------
@@ -79,11 +81,10 @@
   /* Portada asimétrica: "30" enorme a la izquierda, rama de guayacán desde la esquina */
   .portada { position:relative; padding-top:var(--s7); min-height:min(78dvh, 640px); }
   .rama { position:absolute; top:calc(-1 * env(safe-area-inset-top)); right:calc(-1 * var(--s3)); width:min(72vw, 330px); height:auto; z-index:-1; overflow:visible; }
-  .lugar-fecha { font-family:var(--serif-texto); font-style:italic; color:var(--arena); font-size:var(--t-1); letter-spacing:.01em; }
   .treinta { display:block; font-family:var(--serif-display); font-style:italic; font-weight:400; color:var(--oro);
     font-size:clamp(9rem, 46vw, 13.5rem); line-height:.78; letter-spacing:-.04em; margin:var(--s2) 0 0 -.06em;
     text-shadow:0 0 60px rgba(242,193,78,.25); font-feature-settings:"lnum"; }
-  h1 { font-family:var(--serif-display); font-weight:400; font-size:var(--t-5); line-height:1.02; letter-spacing:-.01em; margin-top:var(--s3); max-width:12ch; }
+  h1 { font-family:var(--serif-display); font-weight:400; font-size:clamp(2.6rem, 14.6vw, 3.65rem); line-height:1; letter-spacing:-.015em; margin-top:var(--s3); max-width:none; }
   h1 .nombre { display:block; font-style:italic; color:var(--arena); }
   .entrada { font-family:var(--serif-texto); font-size:var(--t-2); line-height:1.45; color:var(--arena); max-width:24ch; margin-top:var(--s3); }
   .acciones { display:flex; gap:var(--s2); flex-wrap:wrap; margin-top:var(--s4); }
@@ -121,7 +122,6 @@
   .carta p + p { margin-top:var(--s3); }
   .carta .saludo { font-style:italic; color:var(--oro-claro); font-size:var(--t-2); }
   .carta .capitular::first-letter { float:left; font-family:var(--serif-display); font-style:italic; color:var(--oro); font-size:3.6em; line-height:.8; padding:.08em .1em 0 0; }
-  .carta .cita { border-left:2px solid var(--terracota); padding-left:var(--s2); font-style:italic; color:var(--arena); }
 
   /* ---------- Globos: interludio ---------- */
   .interludio { display:flex; align-items:baseline; justify-content:space-between; gap:var(--s2); flex-wrap:wrap; }
@@ -213,8 +213,7 @@
     background:linear-gradient(180deg, rgba(29,23,41,0) 0%, rgba(122,84,112,.55) 35%, rgba(201,139,98,.85) 75%, #e0a86a 100%); }
   .cierre-interior { width:min(100%, 34rem); margin:0 auto; }
   .cierre p { font-family:var(--serif-texto); font-size:var(--t-2); line-height:1.45; max-width:22ch; }
-  .firma { margin-top:var(--s4); font-family:var(--serif-display); font-style:italic; font-size:var(--t-3); line-height:1.15; color:var(--noche); }
-  .firma small { display:block; font-family:var(--sans); font-style:normal; font-size:var(--t-0); color:#3b2a4f; margin-top:var(--s1); }
+  .firma { margin-top:0; font-family:var(--serif-display); font-style:italic; font-size:var(--t-3); line-height:1.15; color:var(--noche); }
   .pie-pre { padding-bottom:var(--s5); }
 
   /* ---------- Entrada orquestada (solo la portada) ---------- */
@@ -314,15 +313,15 @@
   @media (prefers-reduced-motion: reduce) { .musica-btn.invita { animation:none; box-shadow:0 0 0 3px var(--oro); } }
 
   /* Reproductor de YouTube en la portada (≥200×200 como pide YouTube), dentro del flujo: no tapa nada */
-  .reproductor { display:flex; align-items:flex-end; gap:var(--s2); margin-top:var(--s4); }
-  #yt, .reproductor iframe { display:block; flex:none; width:200px; height:200px; border:0; border-radius:10px; background:#000;
-    box-shadow:0 18px 40px -14px rgba(0,0,0,.7); outline:1px solid rgba(242,193,78,.35); outline-offset:3px; }
-  .rep-txt { display:flex; flex-direction:column; gap:2px; font-size:var(--t-0); color:var(--arena); line-height:1.3; padding-bottom:4px; }
-  .rep-txt b { font-family:var(--serif-display); font-weight:400; font-style:italic; font-size:var(--t-2); color:var(--oro-claro); line-height:1.1; }
-  .rep-nota { font-style:normal; color:var(--oro-claro); margin-top:var(--s1); }
-  .rep-nota[hidden], .reproductor[hidden] { display:none; }
-  .reproductor:not([hidden]) { animation:fadeSolo .6s ease-out both; }
-  @media (max-width:370px) { .reproductor { flex-direction:column; align-items:flex-start; } }
+  /* Solo audio: el iframe sigue en el DOM y "visible" para el navegador (sin display:none ni visibility:hidden,
+     que detienen la reproducción), pero no se ve ni se puede tocar. 200×200 es el mínimo que exige YouTube para reproducir. */
+  .reproductor { position:fixed; left:0; bottom:0; width:200px; height:200px; opacity:.01; transform:scale(.02); transform-origin:0 100%; pointer-events:none; z-index:-1; overflow:hidden; }
+  #yt, .reproductor iframe { display:block; width:200px; height:200px; border:0; }
+  .musica-hint { position:fixed; z-index:20; top:calc(66px + env(safe-area-inset-top)); right:calc(10px + env(safe-area-inset-right));
+    margin:0; padding:7px 12px; border-radius:999px; background:var(--oro); color:var(--noche); font:600 13px/1.2 var(--sans);
+    box-shadow:0 8px 20px -8px rgba(0,0,0,.6); pointer-events:none; animation:fadeSolo .3s ease-out both; }
+  .musica-hint[hidden] { display:none; }
+  html, body { overflow-x:clip; }   /* la rama decorativa no debe crear scroll lateral en 360px */
 </style>
 </head>
 <body>
@@ -349,6 +348,8 @@
   <svg class="ic-pausa" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
 </button>
 
+<p class="musica-hint" id="musicaHint" hidden>Toca 🎵 para subir el volumen</p>
+
 <main>
   <header class="portada">
     <svg class="rama" viewBox="0 0 340 300" aria-hidden="true">
@@ -363,14 +364,11 @@
       <use class="fl" href="#flor" x="290" y="10" width="34" height="34" style="animation-delay:.92s"/>
       <use class="fl" href="#flor" x="112" y="186" width="22" height="22" style="animation-delay:.98s"/>
     </svg>
-    <p class="lugar-fecha anima" style="animation-delay:.2s">Desde Boyacá, con flores de guayacán</p>
     <span class="treinta anima" style="animation-delay:.35s" aria-hidden="true">30</span>
     <h1 class="anima" style="animation-delay:.55s">¡Feliz cumpleaños, <span class="nombre" id="nombre"></span></h1>
     <p class="entrada anima" style="animation-delay:.7s">El guayacán florece más bonito después de la sequía. Tú eres la prueba.</p>
-    <aside class="reproductor" id="reproductor" hidden aria-label="Música: La vuelta al mundo, de Calle 13">
+    <aside class="reproductor" id="reproductor" aria-hidden="true">
       <div id="yt"></div>
-      <p class="rep-txt"><span>Para acompañar</span><b>La vuelta al mundo</b><span>Calle 13</span>
-        <em class="rep-nota" id="repNota" hidden>Si no suena, toca el video ▶</em></p>
     </aside>
   </header>
 
@@ -395,9 +393,9 @@
         <p class="saludo">Natalia:</p>
         <p class="capitular">Hoy llegas a los 30 y quiero aprovechar para decirte, con calma, todo lo que admiro de ti.</p>
         <p>Lo que has logrado en tus estudios no fue suerte. Esa foto con el título en la mano lo cuenta todo, y me alegra muchísimo haberte visto llegar ahí.</p>
-        <p>Has sacado adelante más de un empleo al mismo tiempo y en cada uno das lo mejor de ti, sin quejarte y sin aflojar.</p>
-        <p>A tu gente la tratas con un amor inmenso, y se nota en cada detalle. Y esa ternura no para ahí: cualquier criatura de cuatro patas que se te cruce encuentra en ti un refugio.</p>
-        <p class="cita">Has atravesado tiempos difíciles y aquí estás, más luminosa que nunca.</p>
+        <p>Has sacado adelante más de un empleo al mismo tiempo y en cada uno das lo mejor de ti, sin quejarte y sin rendirte.</p>
+        <p>A tu gente la tratas con un amor inmenso, y se nota en cada detalle. Y esa ternura no para ahí: los animales encuentran en ti un refugio.</p>
+        <p>Has atravesado tiempos difíciles y aquí estás, más luminosa que nunca.</p>
         <p>Que estos 30 te traigan descanso, viajes, música en vivo y mucha alegría. Te lo mereces todo.</p>
         <p class="final" id="finCarta">Cuando termines de leer, baja un poco: falta pedir un deseo.</p>
       </article>
@@ -510,8 +508,7 @@
 
 <footer class="cierre" id="cierre" hidden>
   <div class="cierre-interior">
-    <p>Que la vida te devuelva, multiplicado, todo lo bueno que das.</p>
-    <p class="firma">Con mucho cariño, Alexander<small>Tu amigo</small></p>
+    <p class="firma">Con mucho cariño, Alexander</p>
   </div>
 </footer>
 
@@ -577,35 +574,35 @@
   const TOTAL_GLOBOS = 30, A_LA_VEZ = 5;
   const escenario = document.getElementById("escenario");
   const elogios = [
-    "¡Ese diploma se ganó a pulso!",
-    "Cerebro brillante, corazón enorme",
-    "Varios oficios, una sola berraca",
-    "¿Cansancio? No conoces esa palabra",
-    "Constancia que da frutos",
+    "¡Ese diploma lo ganaste tú!",
+    "Varios trabajos, cero quejas",
     "Tu familia: tu mayor tesoro",
-    "Orgullo de los tuyos",
     "¿Hay algún animalito que no te adore?",
     "Pendiente de quien lo necesite",
-    "Tu cariño alcanza para todos",
     "Banda sonora propia, a todo volumen",
-    "Primera fila en cada concierto",
-    "Coleccionista de tarimas",
     "Rutina de skincare: nivel experta",
     "¿Un matcha para celebrar?",
     "Core de acero gracias al pilates",
+    "Primera fila en cada concierto",
     "¡Maleta lista para otro destino!",
-    "El mundo te queda pequeño",
     "Impecable de pies a cabeza",
-    "Pinta de revista, todos los días",
-    "Linda sin intentarlo",
-    "Elegancia natural",
-    "Estilo con sello personal",
-    "Inspiras sin proponértelo",
-    "¿De dónde sacas tanta energía?",
-    "Te caes, te sacudes, sigues",
-    "Amiga leal, de las buenas",
-    "Treinta y recién empiezas",
+    "Mujer que alza la voz por lo justo",
     "Guayacán en flor después de cada sequía",
+    "Treinta y recién empiezas",
+    "Cerebro brillante, mente curiosa",
+    "¿Cansancio? No conoces esa palabra",
+    "Orgullo de los tuyos",
+    "Tu cariño alcanza para todos",
+    "Cantas a todo pulmón",
+    "Coleccionista de tarimas",
+    "El mundo te queda pequeño",
+    "Linda sin intentarlo",
+    "Te caes, te sacudes, sigues",
+    "¿De dónde sacas tanta energía?",
+    "Inspiras sin proponértelo",
+    "Elegancia natural",
+    "Constancia que da frutos",
+    "Amiga leal, de las buenas",
     "¡Feliz cumpleaños, Natalia! Que la vida te consienta"
   ];
   const coloresGlobo = ["#f2c14e","#c59be0","#c98b62","#7fa88a","#e9d3b4","#7a5470"];
@@ -636,9 +633,13 @@
       g.style.animationDuration = (6.5 + Math.random()*2.5) + "s";
       g.style.animationDelay = primeraOla ? (-1.5 - Math.random()*3) + "s" : "0s";
     }
+    // Música: se llama de forma SÍNCRONA en el primer evento del toque (pointerdown) y otra vez en touchend/click,
+    // porque según el navegador el "gesto válido" para audio es uno u otro (en iOS y Chrome cuenta touchend/click).
+    g.addEventListener("pointerdown", gestoMusica);
+    g.addEventListener("touchend", gestoMusica, { passive:true });
     g.onclick = (e) => {
       if (g.classList.contains("reventado") || reventados >= TOTAL_GLOBOS) return;
-      iniciarMusicaConGesto();   // primer toque natural = gesto del usuario para la música
+      gestoMusica(e); contarPopMusica();
       g.classList.add("reventado"); pop(); vibrar(20);
       const x = e.clientX || g.getBoundingClientRect().left + 29, y = e.clientY || g.getBoundingClientRect().top;
       lanzarConfeti(reventados % 10 === 9 ? 160 : 24, x, y);   // explosión grande cada 10 años
@@ -824,19 +825,30 @@
   document.getElementById("formLugar").addEventListener("submit", (e) => { e.preventDefault(); enviar(); });
 
   // ---------- Música de fondo: "La vuelta al mundo" (Calle 13), video oficial en YouTube ----------
-  // No se descarga ni se incrusta el audio: suena el reproductor oficial de YouTube (IFrame API), visible mientras suena.
+  // No se descarga ni se incrusta el audio: suena el reproductor oficial de YouTube (IFrame API), visible (200×200).
   const VIDEO_ID = "v_zZmsFZDaM";
   const btn = document.getElementById("musica");
   const rep = document.getElementById("reproductor");
-  let yt = null, ytListo = false, ytFallo = false, ytSonando = false, musicaIniciada = false, pausadaPorUsuario = false, enMomentoCumple = false;
+  const hint = document.getElementById("musicaHint");
+  let yt = null, ytListo = false, ytFallo = false, ytSonando = false;
+  let musicaDeseada = false;      // ella ya "pidió" música (primer globo) y no la ha pausado
+  let pausadaPorUsuario = false, enMomentoCumple = false, arrancarAlListo = false;
+  let popsMudos = 0, chequeoPendiente = null, pausasForzadas = 0, ytReintentos = 0;
   let synthSonando = false, temporizadores = [];
+  const S = { PLAYING:1, BUFFERING:3, ENDED:0 };
+  const estado_ = () => { try { return yt.getPlayerState(); } catch(e) { return -1; } };
+  const mudo = () => { try { return yt.isMuted(); } catch(e) { return false; } };
+  function suenaDeVerdad() { return ytListo && estado_() === S.PLAYING && !mudo(); }
   function estadoBoton() {
-    const on = ytSonando || synthSonando || enMomentoCumple;
+    const on = (ytListo && ytSonando && !mudo()) || synthSonando || enMomentoCumple;
     btn.setAttribute("aria-pressed", String(on));
-    btn.setAttribute("aria-label", on ? "Pausar la música" : "Poner música: La vuelta al mundo, de Calle 13");
-    btn.classList.toggle("invita", !on && !pausadaPorUsuario && (musicaIniciada || reventados > 0));
+    btn.setAttribute("aria-label", on ? "Pausar la música" : (ytListo && ytSonando && mudo() ? "Subir el volumen de la música" : "Poner música: La vuelta al mundo, de Calle 13"));
+    const falta = musicaDeseada && !pausadaPorUsuario && !enMomentoCumple && !on;
+    btn.classList.toggle("invita", falta);
+    hint.hidden = !(falta && popsMudos >= 3 && ytListo && !ytFallo);
   }
-  function mostrarReproductor(si) { rep.hidden = !si; }
+
+  // 1) Crear el reproductor apenas carga la página, para que esté LISTO antes del primer globo
   function cargarYouTube() {
     if (window.YT && YT.Player) return crearPlayer();
     window.onYouTubeIframeAPIReady = crearPlayer;
@@ -844,51 +856,94 @@
     sc.src = "https://www.youtube.com/iframe_api"; sc.async = true;
     sc.onerror = () => { ytFallo = true; estadoBoton(); };
     document.head.appendChild(sc);
-    setTimeout(() => { if (!ytListo) { ytFallo = true; estadoBoton(); } }, 12000);
+    setTimeout(() => { if (!ytListo) { ytFallo = true; estadoBoton(); } }, 15000);
   }
   function crearPlayer() {
     const vars = { playsinline:1, rel:0, modestbranding:1, controls:1, fs:0 };
     if (/^https?:/.test(location.protocol)) vars.origin = location.origin;
     yt = new YT.Player("yt", { width:200, height:200, videoId:VIDEO_ID, playerVars:vars,
       events: {
-        onReady: () => { ytListo = true; ytFallo = false; yt.setVolume(80); mostrarReproductor(true); estadoBoton(); },
-        onStateChange: (ev) => {
-          ytSonando = ev.data === YT.PlayerState.PLAYING;
-          if (ytSonando) { document.getElementById("repNota").hidden = true; pausadaPorUsuario = false; }
-          if (ev.data === YT.PlayerState.ENDED && !enMomentoCumple) { yt.seekTo(0); yt.playVideo(); }
+        onReady: () => {
+          ytListo = true; ytFallo = false; yt.setVolume(100);
+          if (arrancarAlListo && !pausadaPorUsuario) arrancar(false);   // hubo un toque antes de estar listo
           estadoBoton();
         },
-        onError: (ev) => { console.warn("YouTube error", ev && ev.data); ytFallo = true; ytListo = false; mostrarReproductor(false); estadoBoton(); }
+        onStateChange: (ev) => {
+          ytSonando = ev.data === S.PLAYING;
+          if (ev.data === S.ENDED && musicaDeseada && !enMomentoCumple) { yt.seekTo(0); yt.playVideo(); }
+          // El navegador la pausó solo (p. ej. al subir el volumen sin permiso): que siga sonando en silencio
+          // y el próximo toque vuelve a intentar subirle el volumen.
+          if (ev.data === 2 && musicaDeseada && !pausadaPorUsuario && !enMomentoCumple && pausasForzadas++ < 8) { try { yt.mute(); yt.playVideo(); } catch(e) {} }
+          estadoBoton();
+        },
+        onError: (ev) => {
+          console.warn("YouTube error", ev && ev.data);
+          if (ytReintentos++ < 2) {   // a veces es pasajero: reintenta antes de pasar a la melodía de respaldo
+            setTimeout(() => { try { musicaDeseada && !pausadaPorUsuario ? yt.loadVideoById(VIDEO_ID) : yt.cueVideoById(VIDEO_ID); } catch(e) {} }, 800);
+            return;
+          }
+          ytFallo = true; ytListo = false; estadoBoton();
+        }
       } });
   }
-  // Carga perezosa: cuando la página ya terminó de cargar
-  addEventListener("load", () => setTimeout(cargarYouTube, 600));
 
-  function tocarYouTube(desdeIcono) {
-    yt.playVideo();   // se llama dentro del gesto del usuario (toque)
-    musicaIniciada = true;
-    setTimeout(() => {   // iOS puede bloquearlo: entonces el ícono late y la tarjeta pide tocar el video
-      if (!ytSonando && !pausadaPorUsuario) {
-        document.getElementById("repNota").hidden = false; estadoBoton();
-        if (desdeIcono) rep.scrollIntoView({ behavior: menosMov ? "auto" : "smooth", block: "center" });   // en iPhone: que pueda tocar el video
-      }
-    }, 2500);
+  // 2) Arranque y escalera de respaldo para iOS
+  function arrancar(enGesto) {
+    musicaDeseada = true; arrancarAlListo = false;
+    try { yt.unMute(); yt.setVolume(100); yt.playVideo(); } catch(e) {}
+    clearTimeout(chequeoPendiente);
+    chequeoPendiente = setTimeout(() => chequear(0), 1200);
   }
-  function iniciarMusicaConGesto() {
-    if (musicaIniciada) return;
-    if (ytListo) tocarYouTube();
-    else { musicaIniciada = false; setTimeout(estadoBoton, 50); }   // aún cargando: el ícono late para invitar
+  function chequear(intento) {
+    if (!musicaDeseada || pausadaPorUsuario || enMomentoCumple) return;
+    const st = estado_();
+    if (st === S.BUFFERING && intento < 3) { chequeoPendiente = setTimeout(() => chequear(intento + 1), 1200); return; }
+    if (st !== S.PLAYING) {
+      // iOS bloqueó el sonido: arrancamos en silencio (permitido en línea) y lo subimos en su próximo toque
+      try { yt.mute(); yt.playVideo(); } catch(e) {}
+    }
+    estadoBoton();
   }
+  // Se llama sincrónicamente dentro de cada toque (globos y cualquier otro toque de la página)
+  function gestoMusica() {
+    prepararAudio();                         // desbloquea el Web Audio del "Cumpleaños feliz" (iOS)
+    if (ytFallo) return;
+    if (!ytListo) { arrancarAlListo = true; musicaDeseada = true; return; }   // se arranca en onReady
+    if (enMomentoCumple) return;
+    if (pausadaPorUsuario || enMomentoCumple) return;
+    if (!musicaDeseada) { arrancar(true); return; }
+    if (!suenaDeVerdad()) {                  // está en silencio o detenida: este toque la sube / la reanuda
+      try { yt.unMute(); yt.setVolume(100); if (estado_() !== S.PLAYING) yt.playVideo(); } catch(e) {}
+      setTimeout(estadoBoton, 400);
+    }
+  }
+  function contarPopMusica() {               // tras el pop: ¿sigue muda o detenida?
+    setTimeout(() => {
+      if (musicaDeseada && !pausadaPorUsuario && !suenaDeVerdad()) popsMudos++; else if (suenaDeVerdad()) popsMudos = 0;
+      estadoBoton();
+    }, 600);
+  }
+  // Cualquier toque natural más adelante (carta, pastel, regalo, tarjetas…) también reanuda o sube el volumen si hace falta
+  ["pointerdown", "touchend", "click"].forEach(tipo => document.addEventListener(tipo, (e) => {
+    if (e.target.closest && e.target.closest("#musica, .globo")) return;   // el ícono y los globos tienen su propia lógica
+    if (musicaDeseada || arrancarAlListo) gestoMusica();
+  }, { passive:true, capture:true }));
+
+  // Ícono de la esquina: reproducir / pausar (y subir volumen si estaba en silencio)
   btn.onclick = () => {
+    prepararAudio();
     if (ytListo && !ytFallo) {
-      if (ytSonando) { pausadaPorUsuario = true; yt.pauseVideo(); }
-      else { pausadaPorUsuario = false; tocarYouTube(true); }
+      if (ytSonando && !mudo()) { pausadaPorUsuario = true; musicaDeseada = false; yt.pauseVideo(); }
+      else { pausadaPorUsuario = false; popsMudos = 0; arrancar(true); }
+    } else if (!ytListo && !ytFallo) {
+      arrancarAlListo = true; musicaDeseada = true; pausadaPorUsuario = false;
     } else {
       if (synthSonando) { synthSonando = false; temporizadores.forEach(clearTimeout); temporizadores = []; }
-      else { prepararAudio(); synthSonando = true; tocarBucle(); }
+      else { synthSonando = true; tocarBucle(); }
     }
     estadoBoton();
   };
+  cargarYouTube();   // sin esperar: el reproductor tiene que estar listo antes del primer globo
 
   // ---------- "Cumpleaños feliz" sintetizado con Web Audio (sin archivos externos) ----------
   let audioCtx = null;
@@ -899,9 +954,16 @@
     ["G4",.75],["G4",.25],["G5",1],["E5",1],["C5",1],["B4",1],["A4",2],
     ["F5",.75],["F5",.25],["E5",1],["C5",1],["D5",1],["C5",3]
   ];
+  let audioDesbloqueado = false;
   function prepararAudio() {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === "suspended") audioCtx.resume();
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state !== "running") audioCtx.resume();
+      if (!audioDesbloqueado) {              // truco clásico de iOS: un búfer silencioso dentro del gesto
+        const b = audioCtx.createBuffer(1, 1, 22050), src = audioCtx.createBufferSource();
+        src.buffer = b; src.connect(audioCtx.destination); src.start(0); audioDesbloqueado = true;
+      }
+    } catch(e) {}
   }
   function nota(freq, inicio, dur) {
     const o = audioCtx.createOscillator(), o2 = audioCtx.createOscillator(), gn = audioCtx.createGain();
@@ -936,14 +998,20 @@
     // Se llama dentro del toque al pastel. Si suena YouTube: baja, pausa, suena "Cumpleaños feliz" y luego vuelve.
     prepararAudio();
     if (synthSonando) return;   // en modo respaldo ya está sonando la melodía
-    const volver = ytListo && ytSonando;
-    enMomentoCumple = true;
+    const volver = ytListo && musicaDeseada && !pausadaPorUsuario;
+    enMomentoCumple = true; estadoBoton();
     const cantar = () => tocarUnaVez(() => {
       enMomentoCumple = false;
-      if (volver && !pausadaPorUsuario) { yt.setVolume(0); yt.playVideo(); fundir(0, 80, 1200); }
+      if (volver && !pausadaPorUsuario) {
+        // Android/Chrome: vuelve sola. iPhone: si no vuelve, la reanuda su siguiente toque (regalo, tarjetas…)
+        try { yt.setVolume(0); yt.unMute(); yt.playVideo(); } catch(e) {}
+        fundir(0, 100, 1200);
+        clearTimeout(chequeoPendiente); chequeoPendiente = setTimeout(() => chequear(0), 1500);
+      }
+      estadoBoton();
     });
-    if (volver) fundir(80, 0, 600, () => { yt.pauseVideo(); pausadaPorUsuario = false; cantar(); });
-    else cantar();
+    if (volver && estado_() === S.PLAYING) fundir(100, 0, 600, () => { yt.pauseVideo(); cantar(); });
+    else { if (volver) try { yt.pauseVideo(); } catch(e) {} cantar(); }
   }
 </script>
 </body>
